@@ -1,3 +1,4 @@
+using SpotCheck.Models;
 using SpotCheck.Repositories;
 
 namespace SpotCheck.Services
@@ -9,6 +10,11 @@ namespace SpotCheck.Services
         public SpotsService(SpotsRepository spotsRepo)
         {
             _spotsRepo = spotsRepo;
+        }
+
+        internal Spot Create(Spot data)
+        {
+            return _spotsRepo.Create(data);
         }
     }
 }

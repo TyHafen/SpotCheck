@@ -1,5 +1,9 @@
 
+using System.Threading.Tasks;
+using CodeWorks.Auth0Provider;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SpotCheck.Models;
 using SpotCheck.Services;
 
 namespace SpotCheck.Controllers
@@ -14,6 +18,26 @@ namespace SpotCheck.Controllers
         public SpotsController(SpotsService spotsService)
         {
             _spotsService = spotsService;
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Spot>> Create([FromBody] Spot data)
+        {
+            try
+            {
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                data.CreatorId = userInfo.Id;
+                data.Creator = userInfo;
+                Spot spot = _spotsService.Create(data);
+                return Ok(spot);
+            }
+            catch (System.Exception e)
+            {
+
+                return BadRequest(e.Message);
+
+            }
         }
     }
 }
