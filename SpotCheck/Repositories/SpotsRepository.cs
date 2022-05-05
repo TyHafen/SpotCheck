@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Dapper;
 using SpotCheck.Models;
 
@@ -22,6 +24,16 @@ namespace SpotCheck.Repositories
             int id = _db.ExecuteScalar<int>(sql, data);
             data.Id = id;
             return data;
+        }
+
+        internal List<Spot> GetAll()
+        {
+            string sql = @"SELECT s.*, a.* FROM spots s JOIN accounts a ON s.creatorId = a.id;";
+            return _db.Query<Spot, Account, Spot>(sql, (spot, account) =>
+            {
+                spot.Creator = account;
+                return spot;
+            }).ToList();
         }
     }
 }

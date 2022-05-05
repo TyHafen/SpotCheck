@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SpotCheck.Models;
 using SpotCheck.Repositories;
 
@@ -15,6 +16,11 @@ namespace SpotCheck.Services
         internal Spot Create(Spot data)
         {
             return _spotsRepo.Create(data);
+        }
+
+        internal List<Spot> GetAll()
+        {
+            return _spotsRepo.GetAll();
         }
     }
 }

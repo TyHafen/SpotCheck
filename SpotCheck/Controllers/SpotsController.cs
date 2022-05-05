@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeWorks.Auth0Provider;
 using Microsoft.AspNetCore.Authorization;
@@ -38,6 +39,22 @@ namespace SpotCheck.Controllers
                 return BadRequest(e.Message);
 
             }
+        }
+
+        [HttpGet]
+        public ActionResult<List<SpotsController>> GetAll()
+        {
+            try
+            {
+                List<Spot> spots = _spotsService.GetAll();
+                return Ok(spots);
+            }
+            catch (System.Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+
         }
     }
 }
